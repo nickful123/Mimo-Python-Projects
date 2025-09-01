@@ -16,12 +16,14 @@ data = [
   (-264.66, "Groceries")
 ]
 
+#####################################################################################
 
 def print_transactions(transactions):
   for transaction in transactions:
     amount, statement = transaction
     print(f"${amount} - {statement}")
   return
+
 
 def print_summary(transactions):
   deposits = [transaction[0] for transaction in transactions if transaction[0] >= 0]
@@ -34,10 +36,49 @@ def print_summary(transactions):
 
   balance = round(total_deposited + total_withdrawn, 2)
   print(f"Total balance: {balance}")
-
   return
 
 
-print_transactions(data)
+def analyze_transactions(transactions):
+  transactions.sort()
+  largest_withdrawal = transactions[0]
+  largest_deposit = transactions[-1]
+  print(f"The largest withdrawal was: {largest_withdrawal}")
+  print(f"The largest deposit was: {largest_deposit}")
 
-print_summary(data)
+  positive_transactions = [transaction[0] for transaction in transactions if transaction[0] >= 0]
+  withdrawals = [transaction[0] for transaction in transactions if transaction[0] < 0]
+
+  total_withdrawals = sum(withdrawals)
+  if total_withdrawals == 0:
+    print("No withdrawals")
+  else:
+    average_withdrawals = round(total_withdrawals / len(withdrawals), 2)
+    print(f"Average withdrawal ammount: {average_withdrawals}")
+
+  if sum(positive_transactions) == 0:
+    return 0
+  else:
+    total_deposit = sum(positive_transactions)
+    deposit_average = round(total_deposit / len(positive_transactions), 2)
+    print (f"Average deposit amount: {deposit_average}")
+    return
+
+#####################################################################################
+
+#print_transactions(data)
+#print_summary(data)
+#analyze_transactions(data)
+
+while True:
+  print()
+  print(f"Please enter an option: \n'print'\n'analyze'\n'stop'")
+  choice = input()
+  if choice.lower() == "print":
+    print_summary(data)
+  elif choice.lower() == "analyze":
+    analyze_transactions(data)
+  elif choice.lower() == "stop":
+    break
+  else:
+    print("Invalid choice")
